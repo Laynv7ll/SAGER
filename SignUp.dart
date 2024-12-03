@@ -40,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final nameRegex = RegExp(r'^[a-zA-Z\u0600-\u06FF ]+$');
 
     if (!nameRegex.hasMatch(value)) {
-      return 'الاسم يجب أن يحتوي على أحرف فقط';
+      return 'الاسم يجب أن يحتوي الاسم على أحرف فقط';
     }
 
     return null;
