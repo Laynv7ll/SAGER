@@ -223,7 +223,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (_formKey.currentState!.validate()) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('تم إنشاء الحساب بنجاح!')),
+                              content: Text('تم إنشاء الحساب بنجاح')),
                         );
                       }
                     },
