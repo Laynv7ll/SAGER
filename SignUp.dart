@@ -28,6 +28,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isPasswordVisible = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+
+  // Name validation function
+  String? _validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'يرجى إدخال الاسم';
+    }
+
+    // Regular expression for validating only letters (Arabic and English)
+    final nameRegex = RegExp(r'^[a-zA-Z\u0600-\u06FF ]+$');
+
+    if (!nameRegex.hasMatch(value)) {
+      return 'الاسم يجب أن يحتوي على أحرف فقط';
+    }
+
+    return null;
+  }
 
   // Email validation function
   String? _validateEmail(String? value) {
@@ -53,18 +70,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return 'يرجى إدخال كلمة المرور';
     }
 
-    // Password requirements:
-    // - 8–16 characters
-    // - At least one uppercase letter, one lowercase letter, one number, and one special character
+    // Password requirements
     final passwordRegex = RegExp(
       r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~]).{8,16}$',
     );
 
     if (!passwordRegex.hasMatch(value)) {
-      return 'الحد الأدنى لكلمة المرور (8-16 حرف) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n *أرقام \n رموز (مثل: ! , # , @) ';
+      return 'الحد الأدنى لكلمة المرور (8-16 حرف) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
     }
-    textAlign:
-    TextAlign.right;
     return null;
   }
 
@@ -107,13 +120,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 20),
                   // Name Field
                   TextFormField(
+                    controller: _nameController,
                     textAlign: TextAlign.right,
                     decoration: InputDecoration(
                       hintText: 'الاسم',
                       hintStyle: const TextStyle(
                         color: Colors.white,
-                        fontWeight:
-                            FontWeight.normal, // Set font weight to normal
+                        fontWeight: FontWeight.normal,
                       ),
                       filled: true,
                       fillColor: const Color(0xFF709E8F),
@@ -128,6 +141,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             const BorderSide(color: Colors.white, width: 1),
                       ),
                     ),
+                    validator: _validateName, // Name validation
                   ),
                   const SizedBox(height: 15),
                   // Email Field
@@ -138,8 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'البريد الإلكتروني',
                       hintStyle: const TextStyle(
                         color: Colors.white,
-                        fontWeight:
-                            FontWeight.normal, // Set font weight to normal
+                        fontWeight: FontWeight.normal,
                       ),
                       filled: true,
                       fillColor: const Color(0xFF709E8F),
@@ -166,8 +179,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'كلمة المرور',
                       hintStyle: const TextStyle(
                         color: Colors.white,
-                        fontWeight:
-                            FontWeight.normal, // Set font weight to normal
+                        fontWeight: FontWeight.normal,
                       ),
                       filled: true,
                       fillColor: const Color(0xFF709E8F),
@@ -217,7 +229,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     },
                     child: const Text(
                       'إنشاء حساب',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal),
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -226,11 +241,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text(
-                        'لديك حساب بالفعل؟ ',
+                        'لديك حساب بالفعل ؟ ',
                         style: TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'سجل الدخول',
+                        'سجّل الدخول',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
