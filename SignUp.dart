@@ -76,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     if (!passwordRegex.hasMatch(value)) {
-      return 'الحد الأدنى لكلمة المرور (8-16 حرف) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
+      return 'الحد الأدنى لكلمة المرور (8-16 حرف بالإنجليزية) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
     }
     return null;
   }
@@ -241,15 +241,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
                       Text(
-                        'لديك حساب بالفعل ؟ ',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
                         'سجّل الدخول',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      Text(
+                        ' لديك حساب بالفعل؟ ',
+                        style: TextStyle(color: Colors.white),
                       ),
                     ],
                   ),
