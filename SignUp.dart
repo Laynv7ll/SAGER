@@ -40,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final nameRegex = RegExp(r'^[a-zA-Z\u0600-\u06FF ]+$');
 
     if (!nameRegex.hasMatch(value)) {
-      return 'الاسم يجب أن يحتوي الاسم على أحرف فقط';
+      return ' يجب أن يحتوي الاسم على أحرف فقط';
     }
 
     return null;
@@ -76,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
 
     if (!passwordRegex.hasMatch(value)) {
-      return 'الحد الأدنى لكلمة المرور (8-16 حرف بالإنجليزية) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
+      return 'الحد الأدنى لكلمة المرور (8-16 حرف) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
     }
     return null;
   }
