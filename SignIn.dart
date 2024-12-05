@@ -202,9 +202,17 @@ class _SigninScreenState extends State<SigninScreen> {
                             ),
                           );
                         },
-                        child: const Text(
-                          'نسيت كلمة المرور؟',
-                          style: TextStyle(color: Colors.white),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          onHover: (_) {
+                            setState(() {});
+                          },
+                          child: Text(
+                            'نسيت كلمة المرور؟',
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -223,11 +231,16 @@ class _SigninScreenState extends State<SigninScreen> {
                             ),
                           );
                         },
-                        child: const Text(
-                          'إنشاء حساب',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          onHover: (_) {
+                            setState(() {});
+                          },
+                          child: Text(
+                            'إنشاء حساب',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
