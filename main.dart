@@ -97,12 +97,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ],
           ),
         ),
+
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(20.0),
             width: 350,
             decoration: BoxDecoration(
-              color: const Color(0xFF719E8F), // Greenish background
+              color: const Color(0xFF719E8F), 
               borderRadius: BorderRadius.circular(20),
             ),
             child: Form(
@@ -119,6 +120,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
+
                   // Name Field
                   TextFormField(
                     controller: _nameController,
@@ -145,6 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: _validateName, // Name validation
                   ),
                   const SizedBox(height: 15),
+
                   // Email Field
                   TextFormField(
                     controller: _emailController,
@@ -171,6 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: _validateEmail, // Email validation
                   ),
                   const SizedBox(height: 15),
+
                   // Password Field
                   TextFormField(
                     controller: _passwordController,
@@ -211,10 +215,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: _validatePassword, // Password validation
                   ),
                   const SizedBox(height: 20),
+
                   // Sign Up Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF527566), // Darker green
+                      backgroundColor: const Color(0xFF527566),
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -237,6 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
+                  
                   // Sign In Prompt
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
