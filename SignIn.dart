@@ -44,7 +44,6 @@ class _SigninScreenState extends State<SigninScreen> {
     if (!emailRegex.hasMatch(value)) {
       return 'يرجى إدخال بريد إلكتروني صحيح';
     }
-
     return null;
   }
 
@@ -101,6 +100,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
+
                   // Email Field
                   TextFormField(
                     controller: _emailController,
@@ -125,6 +125,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     validator: _validateEmail,
                   ),
                   const SizedBox(height: 15),
+
                   // Password Field
                   TextFormField(
                     controller: _passwordController,
@@ -163,6 +164,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     validator: _validatePassword,
                   ),
                   const SizedBox(height: 20),
+
                   // Login Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -189,6 +191,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
+
                   // Forgot Password
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -218,6 +221,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
+
                   // Sign Up Prompt
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -259,3 +263,4 @@ class _SigninScreenState extends State<SigninScreen> {
     );
   }
 }
+
