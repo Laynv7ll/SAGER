@@ -46,7 +46,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if (!emailRegex.hasMatch(value)) {
       return 'يرجى إدخال بريد إلكتروني صحيح';
     }
-
     return null;
   }
 
@@ -63,7 +62,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if (!passwordRegex.hasMatch(value)) {
       return 'الحد الأدنى لكلمة المرور (8-16 حرف بالإنجليزية) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
     }
-
     return null;
   }
 
@@ -202,6 +200,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
+
                 // Reset Password Button
                 ElevatedButton(
                   onPressed: () {
@@ -228,6 +227,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
+
                 // Back to Sign In with hover effect
                 GestureDetector(
                   onTap: () {
@@ -259,3 +259,4 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 }
+
