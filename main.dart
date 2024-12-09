@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'SignIn.dart';
 
@@ -43,7 +45,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!nameRegex.hasMatch(value)) {
       return ' يجب أن يحتوي الاسم على أحرف فقط';
     }
-
     return null;
   }
 
@@ -61,7 +62,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!emailRegex.hasMatch(value)) {
       return 'يرجى إدخال بريد إلكتروني صحيح';
     }
-
     return null;
   }
 
@@ -92,18 +92,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFE7F3FA), // Light blue
-              Color(0xFFB1D8E8), // Slightly darker blue
+              Color(0xFFE7F3FA),
+              Color(0xFFB1D8E8),
             ],
           ),
         ),
-
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(20.0),
             width: 350,
             decoration: BoxDecoration(
-              color: const Color(0xFF719E8F), 
+              color: const Color(0xFF719E8F),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Form(
@@ -242,7 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  
+
                   // Sign In Prompt
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
