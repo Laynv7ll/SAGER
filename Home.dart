@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// الصفحة الرئيسية
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -60,7 +59,7 @@ class HomePage extends StatelessWidget {
                 label: 'ابدأ',
                 color: const Color.fromARGB(255, 234, 89, 137),
                 onTap: () {
-                  // إجراء الصفحة الرئيسية
+                
                 },
               ),
               _buildIconWithLabel(
@@ -105,7 +104,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// شاشة إعدادات الحساب
 class AccountSettingsP extends StatefulWidget {
   @override
   _AccountSettingsP createState() => _AccountSettingsP();
@@ -176,7 +174,7 @@ class _AccountSettingsP extends State<AccountSettingsP> {
               value: _language,
               items: [
                 DropdownMenuItem(value: 'العربية', child: Text('العربية')),
-                DropdownMenuItem(value: 'English', child: Text('English')),
+                DropdownMenuItem(value: 'English', child: Text('English')), /* OR delete? */
               ],
               onChanged: (value) {
                 setState(() {
