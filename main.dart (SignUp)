@@ -1,10 +1,17 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sager/signin.dart';
-import 'signin.dart';
+import 'package:sager/reset_password.dart';
 
-void main() {
+void main() async {
+  // Supabase setup
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://ykzobrbiemawhcgziyab.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlrem9icmJpZW1hd2hjZ3ppeWFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzUzOTM1NTcsImV4cCI6MjA1MDk2OTU1N30.Bob_5fVRscurRLHjxyqsyo0f859U4VS_2EQ_32u3wv4',
+  );
+
   runApp(const MyApp());
 }
 
@@ -81,6 +88,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return 'الحد الأدنى لكلمة المرور (8-16 حرف بالإنجليزية) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
     }
     return null;
+  }
+
+  // Sign up method using Supabase
+  Future<void> _signUp() async {
+    try {
+      final AuthResponse response = await Supabase.instance.client.auth.signUp(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (response.user != null) {
+        // Successfully signed up
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم إنشاء الحساب بنجاح')),
+        );
+        // Navigate to the sign-in screen or home screen after successful sign-up
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SigninScreen()),
+        );
+      } else {
+        // Handle unexpected cases where user is null
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('حدث خطأ غير متوقع')),
+        );
+      }
+    } catch (e) {
+      // Handle the error
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('فشل في إنشاء الحساب: ${e.toString()}')),
+      );
+    }
   }
 
   @override
@@ -227,10 +266,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('تم إنشاء الحساب بنجاح')),
-                        );
+                        _signUp();
                       }
                     },
                     child: const Text(
