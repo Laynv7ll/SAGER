@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sager/reset_password.dart';
-import 'main.dart';
-import 'reset_password.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SigninScreen(),
-    );
-  }
-}
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sager/main.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -28,40 +12,54 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isPasswordVisible = false;
 
-  // Email validation function
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'يرجى إدخال البريد الإلكتروني';
     }
-
     final emailRegex = RegExp(
-      r'^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$',
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
-
     if (!emailRegex.hasMatch(value)) {
       return 'يرجى إدخال بريد إلكتروني صحيح';
     }
     return null;
   }
 
-  // Password validation function
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'يرجى إدخال كلمة المرور';
     }
-
-    final passwordRegex = RegExp(
-      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~]).{8,16}$',
-    );
-
-    if (!passwordRegex.hasMatch(value)) {
-      return 'الحد الأدنى لكلمة المرور (8-16 حرف بالإنجليزية) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
-    }
     return null;
+  }
+
+  Future<void> _signIn() async {
+    try {
+      final AuthResponse response =
+          await Supabase.instance.client.auth.signInWithPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (response.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyApp()),
+        );
+      } else {
+        throw Exception("User not found.");
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('فشل تسجيل الدخول')),
+      );
+    }
   }
 
   @override
@@ -177,10 +175,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('تم تسجيل الدخول بنجاح')),
-                        );
+                        _signIn();
                       }
                     },
                     child: const Text(
@@ -191,7 +186,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           fontWeight: FontWeight.normal),
                     ),
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
 
                   // Forgot Password
                   Row(
@@ -211,9 +206,9 @@ class _SigninScreenState extends State<SigninScreen> {
                           onHover: (_) {
                             setState(() {});
                           },
-                          child: Text(
+                          child: const Text(
                             'نسيت كلمة المرور؟',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                             ),
                           ),
@@ -241,9 +236,9 @@ class _SigninScreenState extends State<SigninScreen> {
                           onHover: (_) {
                             setState(() {});
                           },
-                          child: Text(
+                          child: const Text(
                             'إنشاء حساب',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -264,5 +259,3 @@ class _SigninScreenState extends State<SigninScreen> {
     );
   }
 }
-
-
