@@ -1,22 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sager/main.dart';
 import 'package:sager/signin.dart';
-import 'signin.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ResetPasswordScreen(),
-    );
-  }
-}
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -27,43 +12,52 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisible = false;
-  bool _isConfirmPasswordVisible = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
-  // Email validation function
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'يرجى إدخال البريد الإلكتروني';
     }
-
-    final emailRegex = RegExp(
-      r'^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$',
-    );
-
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(value)) {
       return 'يرجى إدخال بريد إلكتروني صحيح';
     }
     return null;
   }
 
-  // Password validation function
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'يرجى إدخال كلمة المرور';
     }
-
-    final passwordRegex = RegExp(
-      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~]).{8,16}$',
-    );
-
+    final passwordRegex =
+        RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~]).{8,16}$');
     if (!passwordRegex.hasMatch(value)) {
       return 'الحد الأدنى لكلمة المرور (8-16 حرف بالإنجليزية) \n :يجب أن تتضمن \n أحرف كبيرة وصغيرة \n أرقام \n رموز (مثل: ! , # , @)';
     }
     return null;
+  }
+
+  Future<void> _sendResetEmail() async {
+    try {
+      await Supabase.instance.client.auth.resetPasswordForEmail(
+        _emailController.text.trim(),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تم إرسال رابط استعادة كلمة المرور')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('خطأ: $e')),
+      );
+    }
   }
 
   @override
@@ -115,8 +109,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                   ),
                   validator: _validateEmail,
+                  keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
 
                 // New Password Field
                 TextFormField(
@@ -241,12 +236,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
-                    onHover: (_) {
-                      setState(() {});
-                    },
-                    child: Text(
+                    child: const Text(
                       'الرجوع إلى تسجيل الدخول',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
                       ),
                     ),
