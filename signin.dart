@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sager/home.dart';
 import 'package:sager/reset_password.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sager/main.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -15,6 +15,32 @@ class _SigninScreenState extends State<SigninScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
+
+  Future<void> signInUser() async {
+    try {
+      final AuthResponse res =
+          await Supabase.instance.client.auth.signInWithPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (res.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {
+        throw Exception("User not found.");
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('فشل تسجيل الدخول')),
+      );
+    }
+  }
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -34,32 +60,6 @@ class _SigninScreenState extends State<SigninScreen> {
       return 'يرجى إدخال كلمة المرور';
     }
     return null;
-  }
-
-  Future<void> _signIn() async {
-    try {
-      final AuthResponse response =
-          await Supabase.instance.client.auth.signInWithPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-
-      if (response.user != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم تسجيل الدخول بنجاح')),
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyApp()),
-        );
-      } else {
-        throw Exception("User not found.");
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('فشل تسجيل الدخول')),
-      );
-    }
   }
 
   @override
@@ -175,7 +175,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        _signIn();
+                        signInUser();
                       }
                     },
                     child: const Text(
@@ -201,52 +201,12 @@ class _SigninScreenState extends State<SigninScreen> {
                             ),
                           );
                         },
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          onHover: (_) {
-                            setState(() {});
-                          },
-                          child: const Text(
-                            'نسيت كلمة المرور؟',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                        child: const Text(
+                          'نسيت كلمة المرور؟',
+                          style: TextStyle(
+                            color: Colors.white,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-
-                  // Sign Up Prompt
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpScreen(),
-                            ),
-                          );
-                        },
-                        child: MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                          onHover: (_) {
-                            setState(() {});
-                          },
-                          child: const Text(
-                            'إنشاء حساب',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      const Text(
-                        ' ليس لديك حساب؟ ',
-                        style: TextStyle(color: Colors.white),
                       ),
                     ],
                   ),
