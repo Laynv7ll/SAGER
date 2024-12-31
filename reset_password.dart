@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sager/main.dart';
 import 'package:sager/signin.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -44,19 +43,28 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     return null;
   }
 
-  Future<void> _sendResetEmail() async {
-    try {
-      await Supabase.instance.client.auth.resetPasswordForEmail(
-        _emailController.text.trim(),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم إرسال رابط استعادة كلمة المرور')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('خطأ: $e')),
-      );
+  Future<void> _resetPassword() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        // Supabase password reset logic
+        await Supabase.instance.client.auth.updateUser(
+          UserAttributes(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('تم ضبط كلمة المرور بنجاح')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const SigninScreen()),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('خطأ: $e')),
+        );
+      }
     }
   }
 
@@ -86,7 +94,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 // Email Field
                 TextFormField(
                   controller: _emailController,
@@ -112,7 +119,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 20),
-
                 // New Password Field
                 TextFormField(
                   controller: _passwordController,
@@ -151,7 +157,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   validator: _validatePassword,
                 ),
                 const SizedBox(height: 15),
-
                 // Confirm Password Field
                 TextFormField(
                   controller: _confirmPasswordController,
@@ -196,17 +201,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
-
                 // Reset Password Button
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('تم إعادة الضبط بنجاح ')),
-                      );
-                      // Perform reset password logic here
-                    }
-                  },
+                  onPressed: _resetPassword,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF527566),
                     minimumSize: const Size(double.infinity, 50),
@@ -223,8 +220,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Back to Sign In with hover effect
+                // Back to Sign In
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -234,13 +230,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     );
                   },
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: const Text(
-                      'الرجوع إلى تسجيل الدخول',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                  child: const Text(
+                    'الرجوع إلى تسجيل الدخول',
+                    style: TextStyle(
+                      color: Colors.white,
                     ),
                   ),
                 ),
