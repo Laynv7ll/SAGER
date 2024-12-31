@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sager/signin.dart';
-import 'package:sager/reset_password.dart';
+import 'home.dart';
+import 'signin.dart';
+import 'reset_password.dart';
 
 void main() async {
   // Supabase setup
@@ -103,10 +104,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('تم إنشاء الحساب بنجاح')),
         );
-        // Navigate to the sign-in screen or home screen after successful sign-up
+
+        // Navigate to HomePage after successful sign-up
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const SigninScreen()),
+          MaterialPageRoute(
+              builder: (context) => HomePage()), // Navigate to HomePage
         );
       } else {
         // Handle unexpected cases where user is null
